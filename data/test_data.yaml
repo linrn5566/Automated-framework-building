@@ -1,0 +1,68 @@
+users:
+  default_user:
+    username: test_user_001
+    password: Test@123456
+    mobile: "13800138000"
+    email: test@example.com
+  
+  admin_user:
+    username: admin_001
+    password: Admin@123456
+    mobile: "13900139000"
+    email: admin@example.com
+
+coupons:
+  discount_coupon:
+    name: "10元折扣券"
+    type: discount
+    amount: 10
+    total_stock: 1000
+    available_stock: 1000
+    min_order_amount: 50
+    description: "订单满50元可用"
+  
+  cashback_coupon:
+    name: "20元返现券"
+    type: cashback
+    amount: 20
+    total_stock: 500
+    available_stock: 500
+    min_order_amount: 100
+    description: "订单满100元可用"
+  
+  full_reduction_coupon:
+    name: "满200减50"
+    type: full_reduction
+    amount: 50
+    total_stock: 200
+    available_stock: 200
+    min_order_amount: 200
+    description: "订单满200元减50元"
+
+activities:
+  spring_festival:
+    title: "春节特惠活动"
+    description: "春节期间多重优惠"
+    max_participants: 10000
+    rules:
+      max_per_user: 3
+      conditions: "每人最多参与3次"
+  
+  double_eleven:
+    title: "双十一狂欢"
+    description: "双十一购物节"
+    max_participants: 50000
+    rules:
+      max_per_user: 5
+      conditions: "每人最多参与5次"
+
+orders:
+  sample_order:
+    amount: 299.99
+    product_name: "测试商品"
+    quantity: 1
+  
+  large_order:
+    amount: 999.99
+    product_name: "高价商品"
+    quantity: 2

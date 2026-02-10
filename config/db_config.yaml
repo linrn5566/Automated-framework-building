@@ -1,0 +1,31 @@
+dev:
+  host: dev-mysql.bank.com
+  port: 3306
+  user: test_user
+  password: test_password
+  database: bank_dev
+  charset: utf8mb4
+
+test:
+  host: test-mysql.bank.com
+  port: 3306
+  user: test_user
+  password: test_password
+  database: bank_test
+  charset: utf8mb4
+
+staging:
+  host: staging-mysql.bank.com
+  port: 3306
+  user: test_user
+  password: test_password
+  database: bank_staging
+  charset: utf8mb4
+
+prod:
+  host: mysql.bank.com
+  port: 3306
+  user: readonly_user
+  password: readonly_password
+  database: bank_prod
+  charset: utf8mb4

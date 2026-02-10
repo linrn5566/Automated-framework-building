@@ -1,0 +1,67 @@
+stages:
+  - test
+  - report
+
+variables:
+  PYTHON_VERSION: "3.10"
+  TEST_ENV: "test"
+
+before_script:
+  - python -m venv venv
+  - source venv/bin/activate
+  - pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+smoke_test:
+  stage: test
+  script:
+    - export TEST_ENV=test
+    - pytest testcases -m smoke -v --alluredir=reports/allure-results
+  artifacts:
+    when: always
+    paths:
+      - reports/allure-results
+    expire_in: 1 week
+  only:
+    - merge_requests
+    - main
+
+regression_test:
+  stage: test
+  script:
+    - export TEST_ENV=test
+    - pytest testcases -m regression -n auto -v --alluredir=reports/allure-results
+  artifacts:
+    when: always
+    paths:
+      - reports/allure-results
+    expire_in: 1 week
+  only:
+    - schedules
+    - main
+
+full_test:
+  stage: test
+  script:
+    - export TEST_ENV=test
+    - pytest testcases -n auto -v --alluredir=reports/allure-results
+  artifacts:
+    when: always
+    paths:
+      - reports/allure-results
+    expire_in: 1 week
+  only:
+    - tags
+
+generate_report:
+  stage: report
+  dependencies:
+    - smoke_test
+  script:
+    - allure generate reports/allure-results -o reports/allure-report --clean
+  artifacts:
+    paths:
+      - reports/allure-report
+    expire_in: 1 month
+  only:
+    - merge_requests
+    - main

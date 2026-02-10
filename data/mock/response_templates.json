@@ -1,0 +1,105 @@
+{
+  "success_response": {
+    "code": 200,
+    "success": true,
+    "message": "操作成功",
+    "data": {}
+  },
+  
+  "error_response": {
+    "code": 400,
+    "success": false,
+    "message": "操作失败",
+    "error": ""
+  },
+  
+  "coupon_create_response": {
+    "code": 201,
+    "success": true,
+    "message": "卡券创建成功",
+    "data": {
+      "id": 1,
+      "name": "测试卡券",
+      "type": "discount",
+      "amount": 10,
+      "total_stock": 1000,
+      "available_stock": 1000,
+      "status": "active"
+    }
+  },
+  
+  "coupon_receive_response": {
+    "code": 200,
+    "success": true,
+    "message": "领取成功",
+    "data": {
+      "user_id": 12345,
+      "coupon_code": "CPN1234567890",
+      "receive_time": "2024-01-01 10:00:00",
+      "expire_time": "2024-12-31 23:59:59"
+    }
+  },
+  
+  "coupon_use_response": {
+    "code": 200,
+    "success": true,
+    "message": "使用成功",
+    "data": {
+      "status": "used",
+      "discount_amount": 10,
+      "order_no": "ORD20240101120000"
+    }
+  },
+  
+  "activity_create_response": {
+    "code": 201,
+    "success": true,
+    "message": "活动创建成功",
+    "data": {
+      "id": 1,
+      "title": "测试活动",
+      "status": "draft",
+      "created_at": "2024-01-01 10:00:00"
+    }
+  },
+  
+  "login_response": {
+    "code": 200,
+    "success": true,
+    "message": "登录成功",
+    "data": {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+      "refresh_token": "refresh_token_here",
+      "expires_in": 7200,
+      "user_info": {
+        "id": 12345,
+        "username": "test_user",
+        "mobile": "13800138000"
+      }
+    }
+  },
+  
+  "validation_error_response": {
+    "code": 400,
+    "success": false,
+    "message": "参数验证失败",
+    "errors": [
+      {
+        "field": "amount",
+        "message": "金额必须大于0"
+      }
+    ]
+  },
+  
+  "not_found_response": {
+    "code": 404,
+    "success": false,
+    "message": "资源不存在"
+  },
+  
+  "unauthorized_response": {
+    "code": 401,
+    "success": false,
+    "message": "未授权，请先登录"
+  }
+}

@@ -1,0 +1,31 @@
+dev:
+  base_url: https://dev-api.bank.com
+  timeout: 30
+  log_level: DEBUG
+  retry_times: 3
+  redis_host: dev-redis.bank.com
+  redis_port: 6379
+
+test:
+  base_url: https://test-api.bank.com
+  timeout: 30
+  log_level: INFO
+  retry_times: 3
+  redis_host: test-redis.bank.com
+  redis_port: 6379
+
+staging:
+  base_url: https://staging-api.bank.com
+  timeout: 30
+  log_level: INFO
+  retry_times: 2
+  redis_host: staging-redis.bank.com
+  redis_port: 6379
+
+prod:
+  base_url: https://api.bank.com
+  timeout: 30
+  log_level: WARNING
+  retry_times: 1
+  redis_host: redis.bank.com
+  redis_port: 6379
