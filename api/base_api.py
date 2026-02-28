@@ -6,8 +6,12 @@ from config.settings import settings
 
 
 class BaseAPI:
-    def __init__(self, client: Optional[HttpClient] = None):
-        self.client = client or HttpClient(base_url=settings.base_url, timeout=settings.timeout)
+    def __init__(self, client: Optional[HttpClient] = None, use_session: bool = True):
+        self.client = client or HttpClient(
+            base_url=settings.base_url,
+            timeout=settings.timeout,
+            use_session=use_session,
+        )
     
     def set_token(self, token: str, token_type: str = "Bearer"):
         self.client.set_token(token, token_type)
