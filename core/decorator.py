@@ -1,20 +1,39 @@
-import time
 import functools
+import random
+import time
 import allure
-from typing import Callable
+from typing import Callable, Iterable, Optional, Tuple, Type
 from core.logger import log
 
 
-def retry(max_attempts=3, delay=1, exceptions=(Exception,)):
+def retry(
+    max_attempts: int = 3,
+    delay: float = 1.0,
+    exceptions: Tuple[Type[BaseException], ...] = (Exception,),
+    allowed_methods: Optional[Iterable[str]] = None,
+    backoff: str = "fixed",
+    jitter: bool = False,
+    max_delay: float = 10.0,
+):
     """
     重试装饰器
     :param max_attempts: 最大重试次数
-    :param delay: 重试间隔时间（秒）
+    :param delay: 初始重试间隔（秒）
     :param exceptions: 需要捕获的异常类型
+    :param allowed_methods: 允许重试的HTTP方法（从kwargs.method或args[1]推断）；None表示不限制
+    :param backoff: fixed 或 exponential
+    :param jitter: 是否启用抖动
+    :param max_delay: 单次sleep最大值（秒）
     """
     def decorator(func: Callable):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
+            method = (kwargs.get('method') or (args[1] if len(args) > 1 else '') or '').upper()
+            if allowed_methods is not None:
+                allowed = {m.upper() for m in allowed_methods}
+                if method and method not in allowed:
+                    return func(*args, **kwargs)
+
             attempts = 0
             while attempts < max_attempts:
                 try:
@@ -25,7 +44,16 @@ def retry(max_attempts=3, delay=1, exceptions=(Exception,)):
                         log.error(f"函数 {func.__name__} 执行失败，已重试 {max_attempts} 次: {str(e)}")
                         raise
                     log.warning(f"函数 {func.__name__} 执行失败，第 {attempts} 次重试: {str(e)}")
-                    time.sleep(delay)
+
+                    if backoff == "exponential":
+                        sleep_s = min(max_delay, delay * (2 ** (attempts - 1)))
+                    else:
+                        sleep_s = min(max_delay, delay)
+
+                    if jitter:
+                        sleep_s = random.uniform(0, sleep_s)
+
+                    time.sleep(sleep_s)
             return None
         return wrapper
     return decorator

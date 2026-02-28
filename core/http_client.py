@@ -45,7 +45,15 @@ class HttpClient:
             raise RuntimeError("HttpClient(use_session=False) 不支持 set_headers，请在请求层显式传 headers")
         self.session.headers.update(headers)
 
-    @retry(max_attempts=3, delay=1, exceptions=(RequestException,))
+    @retry(
+        max_attempts=3,
+        delay=0.5,
+        exceptions=(RequestException,),
+        allowed_methods=("GET", "HEAD", "OPTIONS"),
+        backoff="exponential",
+        jitter=True,
+        max_delay=5.0,
+    )
     @log_request_response
     def request(self, method: str, endpoint: str, **kwargs) -> requests.Response:
         url = f"{self.base_url}{endpoint}" if not endpoint.startswith('http') else endpoint
