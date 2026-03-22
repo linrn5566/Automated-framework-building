@@ -1,0 +1,21 @@
+common:
+  platform: android
+  appium_server: http://127.0.0.1:4723
+  app_path: ""
+  device_name: Android Emulator
+  udid: ""
+  no_reset: false
+  implicit_wait: 5
+  explicit_wait: 15
+
+test:
+  app_package: com.demo.mobile
+  app_activity: .MainActivity
+
+staging:
+  app_package: com.demo.mobile.staging
+  app_activity: .MainActivity
+
+prod:
+  app_package: com.demo.mobile
+  app_activity: .MainActivity

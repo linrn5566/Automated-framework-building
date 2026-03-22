@@ -1,0 +1,13 @@
+common:
+  automationName: UiAutomator2
+  newCommandTimeout: 180
+  autoGrantPermissions: true
+
+android:
+  platformName: Android
+  deviceName: Android Emulator
+
+ios:
+  platformName: iOS
+  automationName: XCUITest
+  deviceName: iPhone 15

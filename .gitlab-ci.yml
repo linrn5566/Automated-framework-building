@@ -5,6 +5,12 @@ stages:
 variables:
   PYTHON_VERSION: "3.10"
   TEST_ENV: "test"
+  MOBILE_PLATFORM: "android"
+  APPIUM_SERVER: "http://127.0.0.1:4723"
+  MOBILE_APP_PATH: ""
+  MOBILE_DEVICE_NAME: ""
+  MOBILE_UDID: ""
+  MOBILE_MARKS: "mobile and ui_smoke"
 
 before_script:
   - python -m venv venv
@@ -52,10 +58,35 @@ full_test:
   only:
     - tags
 
+mobile_smoke_test:
+  stage: test
+  script:
+    - export TEST_ENV=${TEST_ENV}
+    - |
+      args=(
+        --env "${TEST_ENV}"
+        --platform "${MOBILE_PLATFORM}"
+        --appium-server "${APPIUM_SERVER}"
+        -m "${MOBILE_MARKS}"
+      )
+      if [ -n "${MOBILE_APP_PATH}" ]; then args+=(--app-path "${MOBILE_APP_PATH}"); fi
+      if [ -n "${MOBILE_DEVICE_NAME}" ]; then args+=(--device-name "${MOBILE_DEVICE_NAME}"); fi
+      if [ -n "${MOBILE_UDID}" ]; then args+=(--udid "${MOBILE_UDID}"); fi
+      python scripts/run_mobile_tests.py "${args[@]}"
+  artifacts:
+    when: always
+    paths:
+      - reports/allure-results
+      - reports/screenshots
+      - reports/page_source
+      - logs
+    expire_in: 1 week
+  only:
+    - schedules
+    - main
+
 generate_report:
   stage: report
-  dependencies:
-    - smoke_test
   script:
     - allure generate reports/allure-results -o reports/allure-report --clean
   artifacts:

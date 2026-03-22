@@ -1,0 +1,14 @@
+accounts:
+  smoke_user:
+    username: demo_user
+    password: demo_password
+
+coupon:
+  expected_success_text: 领取成功
+  backend_check:
+    enabled: false
+    user_id: 12345
+
+assertions:
+  login_success_text: 首页
+  coupon_receive_success_text: 领取成功
